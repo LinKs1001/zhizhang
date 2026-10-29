@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: zhizhang
+    name: zhizhangmiumiu
     runtime: docker
     plan: free
     repo: https://github.com/LinKs1001/zhizhang
