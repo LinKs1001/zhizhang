@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.gitignore
+data
+backups
+coverage
+previews
+.env*
+*.log
+图标.png
+tsconfig.tsbuildinfo

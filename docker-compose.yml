@@ -1,0 +1,54 @@
+name: zhizhang
+
+services:
+  app:
+    build: .
+    image: zhizhang:local
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_PATH: /data/zhizhang.db
+      SETUP_TOKEN: ${SETUP_TOKEN:?请在 .env 中设置 SETUP_TOKEN}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.deepseek.com}
+      DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-chat}
+      APP_URL: https://${DOMAIN:?请在 .env 中设置 DOMAIN}
+    volumes:
+      - zhizhang-data:/data
+    expose:
+      - "3000"
+
+  backup:
+    image: zhizhang:local
+    restart: unless-stopped
+    command: ["node", "scripts/backup-loop.mjs"]
+    environment:
+      DATABASE_PATH: /data/zhizhang.db
+      BACKUP_DIR: /backups
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+    volumes:
+      - zhizhang-data:/data
+      - zhizhang-backups:/backups
+    depends_on:
+      - app
+
+  caddy:
+    image: caddy:2.9-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?请在 .env 中设置 DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+
+volumes:
+  zhizhang-data:
+  zhizhang-backups:
+  caddy-data:
+  caddy-config:

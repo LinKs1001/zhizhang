@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+data/
+backups/
+.env*
+!.env.example
+*.log
+.DS_Store
+coverage/
+playwright-report/
+test-results/
+previews/source/assets/app-icon.png
+*.tsbuildinfo

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600,initial-scale=1">
+<title>智账 · 四屏总览</title>
+<style>
+:root{--ink:#332b31;--muted:#8f8086;--coral:#ee7e88;--coral-deep:#df6876;--yellow:#ffc857;--cream:#fff9f5}
+*{box-sizing:border-box}
+html,body{margin:0;width:1600px;height:1000px;overflow:hidden;background:#f8f0e9}
+body{font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;position:relative}
+body:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 8% 15%,rgba(238,126,136,.13) 0 2px,transparent 2.5px),radial-gradient(circle at 91% 75%,rgba(255,200,87,.16) 0 2px,transparent 2.5px);background-size:34px 34px,48px 48px;mask-image:linear-gradient(120deg,rgba(0,0,0,.6),transparent 40%,transparent 62%,rgba(0,0,0,.55))}
+.overview{position:relative;z-index:1;height:100%;padding:48px 78px 36px;display:flex;flex-direction:column}
+.top{display:flex;align-items:flex-start;justify-content:space-between;min-height:102px}
+.brand-wrap{display:flex;align-items:center;gap:16px}
+.brand-mark{width:54px;height:54px;border-radius:18px;background:linear-gradient(145deg,#f59198,#e76b79);display:grid;place-items:center;box-shadow:0 12px 28px rgba(223,104,118,.22);position:relative}
+.brand-mark:after{content:"";position:absolute;width:12px;height:12px;border:2px solid rgba(255,255,255,.48);border-radius:50%;right:9px;top:8px}
+.star{width:27px;height:27px;fill:#fff;stroke:#fff;stroke-width:1;stroke-linejoin:round}.brand-emoji{font-size:28px;line-height:1;filter:drop-shadow(0 3px 5px rgba(113,57,62,.12))}
+.brand-title{display:flex;align-items:center;gap:13px}
+.brand-title h1{font-size:30px;line-height:1;letter-spacing:-1px;margin:0;font-weight:790}
+.brand-title span{font-size:10px;font-weight:650;color:#b06f79;background:#fce3e3;border-radius:999px;padding:6px 10px;letter-spacing:.08em}
+.brand-sub{margin:8px 0 0;color:#8f8086;font-size:12px;letter-spacing:.03em}
+.edition{text-align:right;padding-top:3px}
+.edition strong{display:block;font-size:12px;font-weight:700;letter-spacing:.04em}
+.edition span{display:block;color:#a9999e;font-size:10px;margin-top:5px;letter-spacing:.06em}
+.screens{display:flex;justify-content:center;align-items:flex-start;gap:27px;flex:1}
+.screen-card{margin:0;width:315px;position:relative}
+.screen-frame{position:relative;border-radius:27px;padding:0;background:#fff;box-shadow:0 22px 55px rgba(104,65,65,.16),0 3px 10px rgba(104,65,65,.08);overflow:hidden}
+.screen-frame:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.75);border-radius:27px;pointer-events:none}
+.screen-card img{display:block;width:315px;height:682px;object-fit:cover;border-radius:27px}
+
+figcaption{display:flex;align-items:center;justify-content:space-between;padding:12px 3px 0}
+figcaption strong{font-size:12px;font-weight:700;letter-spacing:.02em}
+figcaption span{font-size:9px;color:#ab9b9f;letter-spacing:.06em}
+.footer{display:flex;align-items:center;justify-content:space-between;padding-top:17px;color:#a39196}
+.footer p{margin:0;font-size:10px;letter-spacing:.08em}
+.footer .dots{display:flex;align-items:center;gap:6px}
+.footer i{display:block;width:5px;height:5px;border-radius:50%;background:#e8b4ba}
+.footer i:nth-child(2){background:#f1cc84}.footer i:nth-child(3){background:#91cabc}
+body{background:#f8f3e8;color:#4b4743}
+body:before{background-image:radial-gradient(circle at 8% 15%,rgba(127,174,145,.16) 0 2px,transparent 2.5px),radial-gradient(circle at 91% 75%,rgba(216,176,98,.18) 0 2px,transparent 2.5px);background-size:34px 34px,48px 48px}
+.brand-mark{background:transparent;border-radius:18px;overflow:hidden;box-shadow:0 12px 28px rgba(82,73,59,.16),0 0 0 1px rgba(212,181,116,.30)}
+.brand-mark:after{display:none}.brand-mark img{display:block;width:100%;height:100%;object-fit:cover;border-radius:18px}
+.brand-title span{color:#5f846b;background:#e9f2eb}
+.brand-sub{color:#8c8275}
+.edition strong{color:#4f4b46}.edition span{color:#a29685}
+.screen-frame{box-shadow:0 22px 55px rgba(78,68,52,.16),0 3px 10px rgba(78,68,52,.07)}
+figcaption strong{color:#4c4843}figcaption span{color:#a69a88}
+.footer{color:#9c9182}.footer i{background:#9ec2aa}.footer i:nth-child(2){background:#d7b36b}.footer i:nth-child(3){background:#b99072}</style>
+</head>
+<body>
+<div class="overview">
+  <header class="top">
+    <div>
+      <div class="brand-wrap">
+        <div class="brand-mark"><img src="assets/app-icon.png" alt="智账应用图标"></div>
+        <div>
+          <div class="brand-title"><h1>智账</h1><span>高保真界面预览</span></div>
+          <p class="brand-sub">家庭收支记录 · 清晰、可靠、好记</p>
+        </div>
+      </div>
+    </div>
+    <div class="edition"><strong>FOUR SCREENS</strong><span>2026 · OCTOBER / V1.1</span></div>
+  </header>
+  <main class="screens">
+    <figure class="screen-card">
+      <div class="screen-frame"><img src="../01-home.png" alt="智账首页高保真预览"></div>
+      <figcaption><strong>01 · 首页</strong><span>OVERVIEW</span></figcaption>
+    </figure>
+    <figure class="screen-card">
+      <div class="screen-frame"><img src="../02-entry.png" alt="智账语音记账高保真预览"></div>
+      <figcaption><strong>02 · 记一笔</strong><span>SMART ENTRY</span></figcaption>
+    </figure>
+    <figure class="screen-card">
+      <div class="screen-frame"><img src="../03-analysis.png" alt="智账分析月报高保真预览"></div>
+      <figcaption><strong>03 · 分析月报</strong><span>INSIGHTS</span></figcaption>
+    </figure>
+    <figure class="screen-card">
+      <div class="screen-frame"><img src="../04-login-join.png" alt="智账登录与家庭邀请高保真预览"></div>
+      <figcaption><strong>04 · 登录与加入</strong><span>ONBOARDING</span></figcaption>
+    </figure>
+  </main>
+  <footer class="footer"><p>收支清晰 · 心里有数</p><div class="dots"><i></i><i></i><i></i></div></footer>
+</div>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: zhizhang
+    runtime: docker
+    plan: free
+    repo: https://github.com/LinKs1001/zhizhang
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_PATH
+        value: /data/zhizhang.db
+      - key: SETUP_TOKEN
+        sync: false
+      - key: DASHSCOPE_API_KEY
+        sync: false
+      - key: DASHSCOPE_BASE_URL
+        value: https://dashscope.aliyuncs.com/compatible-mode/v1
+      - key: DASHSCOPE_TEXT_MODEL
+        value: DeepSeek-V4.1-Flash-1017
+      - key: DASHSCOPE_ASR_MODEL
+        value: paraformer-realtime-v2
+    disk:
+      name: zhizhang-data
+      mountPath: /data
+      sizeGB: 1
