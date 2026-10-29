@@ -18,7 +18,7 @@ export async function createDatabase() {
   const client = createClient({ url, authToken: getAuthToken() });
   const db = drizzle(client, { schema });
   const migrationsFolder = path.join(process.cwd(), 'drizzle');
-  if (fs.existsSync(migrationsFolder)) await migrate(db, { migrationsFolder });
+  if (fs.existsSync(migrationsFolder) && process.env.NEXT_PHASE !== 'phase-production-build') await migrate(db, { migrationsFolder });
   return { db, client };
 }
 
@@ -32,3 +32,4 @@ export const db = globalDb.__zhizhangDb!;
 export const client = globalDb.__zhizhangClient!;
 export const sqlite = { prepare: (_sql: string) => ({ get: async () => ({ ok: 1 }) }) };
 export { schema };
+
