@@ -10,8 +10,10 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATABASE_PATH
-        value: /data/zhizhang.db
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
       - key: SETUP_TOKEN
         sync: false
       - key: DASHSCOPE_API_KEY
@@ -22,7 +24,3 @@ services:
         value: DeepSeek-V4.1-Flash-1017
       - key: DASHSCOPE_ASR_MODEL
         value: paraformer-realtime-v2
-    disk:
-      name: zhizhang-data
-      mountPath: /data
-      sizeGB: 1

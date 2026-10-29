@@ -145,14 +145,13 @@ export async function saveBudgets(userId: string, rawInput: unknown) {
   const validIds = new Set(categoryRows.map((row) => row.id));
   if (input.categories.some((item) => !validIds.has(item.categoryId))) throw new Error('预算分类无效');
   const now = Date.now();
-  await db.transaction((tx) => {
-    tx.delete(budgets).where(eq(budgets.householdId, context.householdId)).run();
+  
+    await db.delete(budgets).where(eq(budgets.householdId, context.householdId));
     if (input.totalCents > 0) {
-      tx.insert(budgets).values({ id: randomUUID(), householdId: context.householdId, scope: 'total', categoryId: null, amountCents: input.totalCents, updatedAt: now }).run();
+      await db.insert(budgets).values({ id: randomUUID(), householdId: context.householdId, scope: 'total', categoryId: null, amountCents: input.totalCents, updatedAt: now });
     }
     for (const item of input.categories.filter((entry) => entry.amountCents > 0)) {
-      tx.insert(budgets).values({ id: randomUUID(), householdId: context.householdId, scope: 'category', categoryId: item.categoryId, amountCents: item.amountCents, updatedAt: now }).run();
+      await db.insert(budgets).values({ id: randomUUID(), householdId: context.householdId, scope: 'category', categoryId: item.categoryId, amountCents: item.amountCents, updatedAt: now });
     }
-  });
   broadcastHouseholdUpdate(context.householdId, 'budgets_changed');
 }

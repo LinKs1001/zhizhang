@@ -16,6 +16,7 @@
     "test:e2e": "node scripts/e2e-smoke.mjs"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "better-sqlite3": "^13.0.3",
     "drizzle-orm": "^0.45.4",
     "lucide-react": "^1.62.0",

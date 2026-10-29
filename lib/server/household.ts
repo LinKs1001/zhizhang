@@ -41,11 +41,11 @@ export async function setupOwner(input: SetupInput) {
   const userId = randomUUID();
   const householdId = randomUUID();
 
-  await db.transaction((tx) => {
-    tx.insert(users).values({ id: userId, username, passwordHash, displayName, createdAt: now }).run();
-    tx.insert(households).values({ id: householdId, name: input.householdName?.trim() || '我们家', createdAt: now }).run();
-    tx.insert(memberships).values({ id: randomUUID(), householdId, userId, role: 'owner', joinedAt: now }).run();
-    tx.insert(categories).values(
+  
+    await db.insert(users).values({ id: userId, username, passwordHash, displayName, createdAt: now });
+    await db.insert(households).values({ id: householdId, name: input.householdName?.trim() || '我们家', createdAt: now });
+    await db.insert(memberships).values({ id: randomUUID(), householdId, userId, role: 'owner', joinedAt: now });
+    await db.insert(categories).values(
       DEFAULT_CATEGORIES.map((category, index) => ({
         id: randomUUID(),
         householdId,
@@ -57,8 +57,7 @@ export async function setupOwner(input: SetupInput) {
         isArchived: false,
         createdAt: now,
       })),
-    ).run();
-  });
+    );
 
   return { userId, householdId, displayName };
 }
@@ -136,15 +135,14 @@ export async function acceptInvite(input: { code: string; username: string; pass
   const userId = randomUUID();
   const now = Date.now();
 
-  await db.transaction((tx) => {
-    const currentMembers = tx.select({ value: count() }).from(memberships).where(eq(memberships.householdId, invite.householdId)).get();
-    if ((currentMembers?.value ?? 0) >= MAX_HOUSEHOLD_MEMBERS) throw new Error('家庭账本已经有两位成员');
-    const currentInvite = tx.select({ usedAt: invites.usedAt, expiresAt: invites.expiresAt }).from(invites).where(eq(invites.id, invite.inviteId)).get();
+  
+    const currentMembers = await db.select({ value: count() }).from(memberships).where(eq(memberships.householdId, invite.householdId));
+    if (((currentMembers[0]?.value ?? 0)) >= MAX_HOUSEHOLD_MEMBERS) throw new Error('家庭账本已经有两位成员');
+    const currentInvite = (await db.select({ usedAt: invites.usedAt, expiresAt: invites.expiresAt }).from(invites).where(eq(invites.id, invite.inviteId)))[0];
     if (!currentInvite || currentInvite.usedAt || currentInvite.expiresAt <= now) throw new Error('邀请码已失效');
-    tx.insert(users).values({ id: userId, username, passwordHash, displayName, createdAt: now }).run();
-    tx.insert(memberships).values({ id: randomUUID(), householdId: invite.householdId, userId, role: 'member', joinedAt: now }).run();
-    tx.update(invites).set({ usedAt: now }).where(eq(invites.id, invite.inviteId)).run();
-  });
+    await db.insert(users).values({ id: userId, username, passwordHash, displayName, createdAt: now });
+    await db.insert(memberships).values({ id: randomUUID(), householdId: invite.householdId, userId, role: 'member', joinedAt: now });
+    await db.update(invites).set({ usedAt: now }).where(eq(invites.id, invite.inviteId));
 
   return { userId, householdId: invite.householdId, displayName };
 }
@@ -153,3 +151,4 @@ export async function findUserByUsername(username: string) {
   const rows = await db.select().from(users).where(eq(users.username, username.trim().toLowerCase())).limit(1);
   return rows[0] ?? null;
 }
+
